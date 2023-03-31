@@ -37,6 +37,14 @@ public class CatalogContextSeed
                 await catalogContext.SaveChangesAsync();
             }
 
+            if (!await catalogContext.CatalogLocals.AnyAsync())
+            {
+                await catalogContext.CatalogLocals.AddRangeAsync(
+                    GetPreconfiguredCatalogLocals());
+
+                await catalogContext.SaveChangesAsync();
+            }
+
             if (!await catalogContext.CatalogItems.AnyAsync())
             {
                 await catalogContext.CatalogItems.AddRangeAsync(
@@ -65,7 +73,8 @@ public class CatalogContextSeed
                 new(".NET"),
                 new("Visual Studio"),
                 new("SQL Server"),
-                new("Other")
+                new("Other"),
+                new("LOGIC - RONALD")
             };
     }
 
@@ -80,22 +89,33 @@ public class CatalogContextSeed
             };
     }
 
+    static IEnumerable<CatalogLocal> GetPreconfiguredCatalogLocals()
+    {
+        return new List<CatalogLocal>
+            {
+                new("Quito"),
+                new("Guayaquil")
+        };
+    }
+
     static IEnumerable<CatalogItem> GetPreconfiguredItems()
     {
         return new List<CatalogItem>
             {
-                new(2,2, ".NET Bot Black Sweatshirt", ".NET Bot Black Sweatshirt", 19.5M,  "http://catalogbaseurltobereplaced/images/products/1.png"),
-                new(1,2, ".NET Black & White Mug", ".NET Black & White Mug", 8.50M, "http://catalogbaseurltobereplaced/images/products/2.png"),
+                new(2,2, ".NET Bot Black Sweatshirt", ".NET Bot Black Sweatshirt", 19.5M,  "http://catalogbaseurltobereplaced/images/products/1.png", 2),
+                new(1,5, ".NET Black & White Mug", ".NET Black & White Mug", 8.532M, "http://catalogbaseurltobereplaced/images/products/2.png", 1),
                 new(2,5, "Prism White T-Shirt", "Prism White T-Shirt", 12,  "http://catalogbaseurltobereplaced/images/products/3.png"),
                 new(2,2, ".NET Foundation Sweatshirt", ".NET Foundation Sweatshirt", 12, "http://catalogbaseurltobereplaced/images/products/4.png"),
-                new(3,5, "Roslyn Red Sheet", "Roslyn Red Sheet", 8.5M, "http://catalogbaseurltobereplaced/images/products/5.png"),
-                new(2,2, ".NET Blue Sweatshirt", ".NET Blue Sweatshirt", 12, "http://catalogbaseurltobereplaced/images/products/6.png"),
-                new(2,5, "Roslyn Red T-Shirt", "Roslyn Red T-Shirt",  12, "http://catalogbaseurltobereplaced/images/products/7.png"),
+                new(3,5, "Roslyn Red Sheet", "Roslyn Red Sheet", 8.5M, "http://catalogbaseurltobereplaced/images/products/5.png", 1),
+                new(2,2, ".NET Blue Sweatshirt", ".NET Blue Sweatshirt", 12, "http://catalogbaseurltobereplaced/images/products/6.png", 2),
+                new(2,5, "Roslyn Red T-Shirt", "Roslyn Red T-Shirt",  12, "http://catalogbaseurltobereplaced/images/products/7.png", 2),
                 new(2,5, "Kudu Purple Sweatshirt", "Kudu Purple Sweatshirt", 8.5M, "http://catalogbaseurltobereplaced/images/products/8.png"),
-                new(1,5, "Cup<T> White Mug", "Cup<T> White Mug", 12, "http://catalogbaseurltobereplaced/images/products/9.png"),
+                new(1,5, "Cup<T> White Mug", "Cup<T> White Mug", 12, "http://catalogbaseurltobereplaced/images/products/9.png", 1),
                 new(3,2, ".NET Foundation Sheet", ".NET Foundation Sheet", 12, "http://catalogbaseurltobereplaced/images/products/10.png"),
                 new(3,2, "Cup<T> Sheet", "Cup<T> Sheet", 8.5M, "http://catalogbaseurltobereplaced/images/products/11.png"),
-                new(2,5, "Prism White TShirt", "Prism White TShirt", 12, "http://catalogbaseurltobereplaced/images/products/12.png")
+                new(2,5, "Prism White TShirt", "Prism White TShirt", 12, "http://catalogbaseurltobereplaced/images/products/12.png"),
+                new(1,6, "LOGIC - RONALD RAMIREZ", ".NET Black & White Mug", 8.532M, "http://catalogbaseurltobereplaced/images/products/2.png", 1),
+
             };
     }
 }

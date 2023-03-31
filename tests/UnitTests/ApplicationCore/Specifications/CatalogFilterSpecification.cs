@@ -8,16 +8,16 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Specifications;
 public class CatalogFilterSpecification
 {
     [Theory]
-    [InlineData(null, null, 5)]
-    [InlineData(1, null, 3)]
-    [InlineData(2, null, 2)]
-    [InlineData(null, 1, 2)]
-    [InlineData(null, 3, 1)]
-    [InlineData(1, 3, 1)]
-    [InlineData(2, 3, 0)]
-    public void MatchesExpectedNumberOfItems(int? brandId, int? typeId, int expectedCount)
+    [InlineData(null, null, null, 5)]
+    [InlineData(1, null, null, 3)]
+    [InlineData(2, null, null, 2)]
+    [InlineData(null, 1, null, 2)]
+    [InlineData(null, 3, null, 1)]
+    [InlineData(1, 3, 1, 1)]
+    [InlineData(2, 3, 1, 0)]
+    public void MatchesExpectedNumberOfItems(int? brandId, int? typeId, int? localId, int expectedCount)
     {
-        var spec = new eShopWeb.ApplicationCore.Specifications.CatalogFilterSpecification(brandId, typeId);
+        var spec = new eShopWeb.ApplicationCore.Specifications.CatalogFilterSpecification(brandId, typeId, localId);
 
         var result = spec.Evaluate(GetTestItemCollection()).ToList();
 

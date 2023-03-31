@@ -12,8 +12,9 @@ public class GenerateCatalogItemCacheKey
         var pageIndex = 0;
         int? brandId = null;
         int? typeId = null;
+        int? localId = null;
 
-        var result = CacheHelpers.GenerateCatalogItemCacheKey(pageIndex, Constants.ITEMS_PER_PAGE, brandId, typeId);
+        var result = CacheHelpers.GenerateCatalogItemCacheKey(pageIndex, Constants.ITEMS_PER_PAGE, brandId, typeId, localId);
 
         Assert.Equal("items-0-10--", result);
     }

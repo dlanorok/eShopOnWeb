@@ -21,6 +21,7 @@ public class CatalogViewModelService : ICatalogViewModelService
     private readonly IRepository<CatalogItem> _itemRepository;
     private readonly IRepository<CatalogBrand> _brandRepository;
     private readonly IRepository<CatalogType> _typeRepository;
+    private readonly IRepository<CatalogLocal> _localRepository;
     private readonly IUriComposer _uriComposer;
 
     public CatalogViewModelService(
@@ -28,6 +29,7 @@ public class CatalogViewModelService : ICatalogViewModelService
         IRepository<CatalogItem> itemRepository,
         IRepository<CatalogBrand> brandRepository,
         IRepository<CatalogType> typeRepository,
+        IRepository<CatalogLocal> localRepository,
         IUriComposer uriComposer)
     {
         _logger = loggerFactory.CreateLogger<CatalogViewModelService>();
@@ -35,15 +37,16 @@ public class CatalogViewModelService : ICatalogViewModelService
         _brandRepository = brandRepository;
         _typeRepository = typeRepository;
         _uriComposer = uriComposer;
+        _localRepository = localRepository;
     }
 
-    public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId)
+    public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId, int? localId)
     {
         _logger.LogInformation("GetCatalogItems called.");
 
-        var filterSpecification = new CatalogFilterSpecification(brandId, typeId);
+        var filterSpecification = new CatalogFilterSpecification(brandId, typeId, localId);
         var filterPaginatedSpecification =
-            new CatalogFilterPaginatedSpecification(itemsPage * pageIndex, itemsPage, brandId, typeId);
+            new CatalogFilterPaginatedSpecification(itemsPage * pageIndex, itemsPage, brandId, typeId, localId);
 
         // the implementation below using ForEach and Count. We need a List.
         var itemsOnPage = await _itemRepository.ListAsync(filterPaginatedSpecification);
@@ -60,8 +63,10 @@ public class CatalogViewModelService : ICatalogViewModelService
             }).ToList(),
             Brands = (await GetBrands()).ToList(),
             Types = (await GetTypes()).ToList(),
+            Locals = (await GetLocals()).ToList(),
             BrandFilterApplied = brandId ?? 0,
             TypesFilterApplied = typeId ?? 0,
+            LocalsFilterApplied = localId ?? 0,
             PaginationInfo = new PaginationInfoViewModel()
             {
                 ActualPage = pageIndex,
@@ -100,6 +105,22 @@ public class CatalogViewModelService : ICatalogViewModelService
 
         var items = types
             .Select(type => new SelectListItem() { Value = type.Id.ToString(), Text = type.Type })
+            .OrderBy(t => t.Text)
+            .ToList();
+
+        var allItem = new SelectListItem() { Value = null, Text = "All", Selected = true };
+        items.Insert(0, allItem);
+
+        return items;
+    }
+
+    public async Task<IEnumerable<SelectListItem>> GetLocals()
+    {
+        _logger.LogInformation("GetLocals called.");
+        var locals = await _localRepository.ListAsync();
+
+        var items = locals
+            .Select(type => new SelectListItem() { Value = type.Id.ToString(), Text = type.Local })
             .OrderBy(t => t.Text)
             .ToList();
 

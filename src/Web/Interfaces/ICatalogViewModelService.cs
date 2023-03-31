@@ -7,7 +7,8 @@ namespace Microsoft.eShopWeb.Web.Services;
 
 public interface ICatalogViewModelService
 {
-    Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId);
+    Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId, int? localId);
     Task<IEnumerable<SelectListItem>> GetBrands();
     Task<IEnumerable<SelectListItem>> GetTypes();
+    Task<IEnumerable<SelectListItem>> GetLocals();
 }

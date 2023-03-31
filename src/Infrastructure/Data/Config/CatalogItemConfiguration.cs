@@ -20,7 +20,7 @@ public class CatalogItemConfiguration : IEntityTypeConfiguration<CatalogItem>
 
         builder.Property(ci => ci.Price)
             .IsRequired(true)
-            .HasColumnType("decimal(18,2)");
+            .HasColumnType("decimal(18,3)");
 
         builder.Property(ci => ci.PictureUri)
             .IsRequired(false);
